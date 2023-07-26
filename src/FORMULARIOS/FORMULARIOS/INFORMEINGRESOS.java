@@ -40,6 +40,8 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.time.Instant;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sound.sampled.Line;
 
 
@@ -55,7 +57,7 @@ public class INFORMEINGRESOS extends javax.swing.JFrame {
  private ImageIcon icono2;
  conexion cn=new conexion();
  Connection cone;
- Statement st;
+ PreparedStatement pst;
  ResultSet rs;
  private int currReg;
  private int currReg2;
@@ -75,7 +77,7 @@ public class INFORMEINGRESOS extends javax.swing.JFrame {
        initComponents();
        cn.getConnection();
        mostrardatos();
-       
+     
        lblRango.setVisible(false);
        mes1.setVisible(false);
        yea1.setVisible(false);
@@ -110,10 +112,14 @@ public class INFORMEINGRESOS extends javax.swing.JFrame {
         mes1 = new javax.swing.JComboBox<>();
         yea1 = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
+        fInicio = new com.toedter.calendar.JDateChooser();
+        fFinal = new com.toedter.calendar.JDateChooser();
+        btnBucar = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaAlumnos = new javax.swing.JTable();
         fondo = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
         jSeparator3 = new javax.swing.JPopupMenu.Separator();
@@ -253,6 +259,11 @@ public class INFORMEINGRESOS extends javax.swing.JFrame {
         GENERADOR.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         GENERADOR.setForeground(new java.awt.Color(255, 255, 255));
         GENERADOR.setText("GENERAR PDF");
+        GENERADOR.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                GENERADORMouseClicked(evt);
+            }
+        });
         GENERADOR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 GENERADORActionPerformed(evt);
@@ -292,8 +303,18 @@ public class INFORMEINGRESOS extends javax.swing.JFrame {
         jLabel7.setForeground(new java.awt.Color(0, 105, 150));
         jLabel7.setText("FILTRAR POR:");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 170, 100, -1));
+        jPanel1.add(fInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 130, -1, -1));
+        jPanel1.add(fFinal, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 130, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 30, 820, 260));
+        btnBucar.setText("BUSCAR");
+        btnBucar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBucarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnBucar, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 170, -1, -1));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 30, 890, 260));
 
         jButton1.setBackground(new java.awt.Color(0, 105, 150));
         jButton1.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
@@ -335,6 +356,26 @@ public class INFORMEINGRESOS extends javax.swing.JFrame {
 
         fondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/IMAGENES/fondomenu.jpg"))); // NOI18N
         getContentPane().add(fondo, new org.netbeans.lib.awtextra.AbsoluteConstraints(-90, -20, 1350, 650));
+
+        jButton3.setBackground(new java.awt.Color(0, 105, 150));
+        jButton3.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        jButton3.setForeground(new java.awt.Color(255, 255, 255));
+        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Iconos/información-35.png"))); // NOI18N
+        jButton3.setText("HOME");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                jButton3MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                jButton3MouseExited(evt);
+            }
+        });
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(1083, 0, 110, 50));
 
         jMenuBar1.setBackground(new java.awt.Color(0, 105, 150));
         jMenuBar1.setForeground(new java.awt.Color(255, 255, 255));
@@ -495,9 +536,12 @@ public class INFORMEINGRESOS extends javax.swing.JFrame {
     //------------------------Generador PDF--------------------------------------
     
     private void GENERADORActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GENERADORActionPerformed
-         String mesb2 = mes.getSelectedItem().toString();
-         String yb2 = yea.getSelectedItem().toString();
+        
+       String mesb2 = mes.getSelectedItem().toString();
+        String yb2 = yea.getSelectedItem().toString();
          pdf(mesb2,yb2);
+
+         
     }//GEN-LAST:event_GENERADORActionPerformed
 
     //---------------------------Menu informes-----------------------------------
@@ -659,6 +703,33 @@ public class INFORMEINGRESOS extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    private void GENERADORMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GENERADORMouseClicked
+
+
+    }//GEN-LAST:event_GENERADORMouseClicked
+
+    private void jButton3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseEntered
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3MouseEntered
+
+    private void jButton3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3MouseExited
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void btnBucarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBucarActionPerformed
+        try {
+            SimpleDateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+            String date1=df.format(fInicio.getDate());
+            String date2=df.format(fFinal.getDate());
+            DateSearchShow(date1,date2);
+        } catch (Exception e) {
+        }
+    }//GEN-LAST:event_btnBucarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -731,12 +802,16 @@ public class INFORMEINGRESOS extends javax.swing.JFrame {
     private javax.swing.JMenuItem MenuDonaciones;
     private javax.swing.JMenu MenuEgresos;
     private javax.swing.JMenu MenuInformes;
+    private javax.swing.JButton btnBucar;
     private javax.swing.JComboBox<String> cbBuscador;
     private javax.swing.JComboBox<String> cbFormapago;
     private javax.swing.JComboBox<String> cbTipoCuenta;
+    private com.toedter.calendar.JDateChooser fFinal;
+    private com.toedter.calendar.JDateChooser fInicio;
     private javax.swing.JLabel fondo;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -807,6 +882,53 @@ public class INFORMEINGRESOS extends javax.swing.JFrame {
              JOptionPane.showMessageDialog(this, "Ocurrio un error inesperado.\nFavor comunicarse con el administrador. "+e);
         }
     }
+    
+    //Mostrar datos de ingresos entre Dos Fechas
+    public void DateSearchShow(String d1, String d2){
+     DefaultTableModel tcliente= new DefaultTableModel();
+     tcliente.addColumn("ID");
+     tcliente.addColumn("INGRESO");
+     tcliente.addColumn("CLIENTE");
+     tcliente.addColumn("DUI");
+     tcliente.addColumn("FORMA_PAGO");
+     tcliente.addColumn("CANTIDAD $");
+     tcliente.addColumn("FECHA");
+     tcliente.addColumn("DESCRIPCION");
+     tablaAlumnos.setModel(tcliente);
+     String []datos =new String[8];
+     java.sql.Connection con2 = null;
+     PreparedStatement pst = null;
+     DecimalFormat formato1 = new DecimalFormat("#.00"); //Formato para los double
+   
+     try {
+         if (d1.equals("") || d2.equals("")) {
+           con2 = cn.getConnection();
+           pst=con2.prepareStatement("Select * from ingresos ORDER BY ID_INGRESOS");
+           rs = pst.executeQuery();
+         }else{
+           con2 = cn.getConnection();
+           pst=con2.prepareStatement("Select * from ingresos where FECHA between ? and ?");
+           pst.setString(1, d1);
+           pst.setString(2, d2);
+           rs = pst.executeQuery();
+         }
+           while (rs.next()) {
+               datos[0]=rs.getString(1);
+               datos[1]=rs.getString(2);
+               datos[2]=rs.getString(3);
+               datos[3]=rs.getString(4);
+               datos[4]=rs.getString(5);
+               datos[5]= formato1.format(Double.parseDouble(rs.getString(6)));
+               datos[6]=rs.getString(7);
+               datos[7]=rs.getString(8);
+                tcliente.addRow(datos);
+            }
+            this.tablaAlumnos.setModel(tcliente);
+        } catch (Exception e) {
+             JOptionPane.showMessageDialog(this, "Ocurrio un error inesperado.\nFavor comunicarse con el administrador. "+e);
+        }
+    }
+    
     
     //------------------------------------Metodo para querys de busqueda-----------------------------------------------------------
     
@@ -891,11 +1013,16 @@ public class INFORMEINGRESOS extends javax.swing.JFrame {
      cbTipoCuenta.setEnabled(true);
      // txtCantidad.setEnabled(true);
     }
-    
+        
+//       
 private void pdf(String mes, String year){
     try {
+        
+        
+
+
         FileOutputStream archivo;
-        File file=new File(System.getProperty("user.home")+"/desktop/informe/informe_ingresos-"+mes+"-"+year+".pdf");
+        File file=new File(System.getProperty("user.home")+"/desktop/"+mes+"-"+year+".pdf");
         archivo=new FileOutputStream(file);
         Image imagen = Image.getInstance("src/IMAGENES/IMAGENES/logo2.png");
         imagen.scalePercent(30f);
@@ -1142,5 +1269,6 @@ private void verificarCB()
             yea.setEnabled(true);
         }
 }
-
+        
+   
 }

@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package FORMULARIOS;
 
 
@@ -27,16 +23,15 @@ import javax.swing.table.DefaultTableModel;
 import java.time.Instant;
 import java.util.Date;
 
-/**
- *
- * @author Fujitsu
- */
+
 public class CUENTAEGRESOS extends javax.swing.JFrame {
- //private JDesktopPane escritorio;
-         private ImageIcon imagen;
+
+     private ImageIcon imagen;
     private ImageIcon icono;
      private ImageIcon imagen2;
     private ImageIcon icono2;
+    java.sql.Connection con2 ;
+      PreparedStatement pst;
     conexion cn=new conexion();
     Connection cone;
             Statement st;
@@ -49,13 +44,7 @@ public class CUENTAEGRESOS extends javax.swing.JFrame {
     private String yb;
     private int ye;
    
-       
-       //Fondo fondo1=new Fondo();
-    /**
-     * Creates new form ADMINISTRACION
-     */
     public CUENTAEGRESOS() {
-       // this.setContentPane(fondo1);
         initComponents();
         cn.getConnection();
          mostrardatos();
@@ -655,8 +644,6 @@ public class CUENTAEGRESOS extends javax.swing.JFrame {
     private void tablaAlumnosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaAlumnosMouseClicked
         // TODO add your handling code here:
          this.btnCancelar.setVisible(true);
-//         this.ms1.setVisible(true);
-//         this.ms2.setVisible(true);  
          this.btnEliminar.setEnabled(true);
          this.btnActualizar.setEnabled(true);
          this.btnIngresar.setEnabled(false);
@@ -668,7 +655,7 @@ public class CUENTAEGRESOS extends javax.swing.JFrame {
          this.txtNombre.setText(this.tablaAlumnos.getValueAt(iRow, 1).toString());
         this.txtDireccion.setText(this.tablaAlumnos.getValueAt(iRow, 3).toString());
         this.txtNumero.setText(this.tablaAlumnos.getValueAt(iRow, 2).toString());
-//        cbFormapago.setSelectedItem(this.tablaAlumnos.getValueAt(iRow, 2).toString());
+        //  this.cbFormapago.setSelectedItem(this.tablaAlumnos.getValueAt(iRow, 2).toString());
     }//GEN-LAST:event_tablaAlumnosMouseClicked
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
@@ -711,6 +698,7 @@ public class CUENTAEGRESOS extends javax.swing.JFrame {
          BUSCADOR(buscador,mesb,ye);
          //this.cbBusca.setVisible(false);
          habilitar();
+
     }//GEN-LAST:event_btnMostrarActionPerformed
 
     private void cbBuscadorComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_cbBuscadorComponentAdded
@@ -790,30 +778,20 @@ public class CUENTAEGRESOS extends javax.swing.JFrame {
      tcliente.addColumn("TELEFONO");
      tcliente.addColumn("DIRECCION");
      tablaAlumnos.setModel(tcliente);
-    String []datos =new String[6];
-     java.sql.Connection con2 = null;
-      PreparedStatement pst = null;
-      String dato = "";
-      dato = cbBuscador.getSelectedItem().toString();
-   
+    String []datos =new String[4];
+    String      dato = cbBuscador.getSelectedItem().toString();
         try {
-            con2 = cn.getConnection();
+              con2 = cn.getConnection();
             pst=con2.prepareStatement("Select * from cuenta_egresos where NOMBRE_CUENTA='"+(dato)+"'");
             rs = pst.executeQuery();
-            while (rs.next()) {
-             
+                     while (rs.next()) {
                datos[0]=rs.getString(1);
                datos[1]=rs.getString(2);
                datos[2]=rs.getString(3);
                datos[3]=rs.getString(4);
-               datos[4]=rs.getString(5);
-               datos[5]=rs.getString(6);
-               
                 tcliente.addRow(datos);
-            }
             this.tablaAlumnos.setModel(tcliente);
-            
-             // JOptionPane.showMessageDialog(this, "NIE"+datos[0]+"\n"+datos[1]+"\n"+datos[2]+"\n"+datos[3]+"\n"+datos[4]+"\n"+datos[5]);
+                     }
         } catch (Exception e) {
              JOptionPane.showMessageDialog(this, "Ocurrio un error inesperado.\nFavor comunicarse con el administrador. "+e);
         }
@@ -823,32 +801,23 @@ public class CUENTAEGRESOS extends javax.swing.JFrame {
         this.btnMostrar.setEnabled(false);
         this.cbBuscador.setVisible(false);
         habilitar();
-//        this.ms1.setVisible(false);
-//        this.ms2.setVisible(false);  
-        
         this.btnEliminar.setEnabled(false);
         this.btnActualizar.setEnabled(false);
         this.btnIngresar.setEnabled(true);
         this.btnMostrar.setEnabled(false);
         this.btnCancelar.setVisible(false);
-        
         this.txtNumero.setText(null);
         this.txtDireccion.setText(null);
-             
-//        this.cbTipoCuenta.setSelectedIndex(0);
-//        this.cbFormapago.setSelectedIndex(0);
         this.txtNumero.requestFocus();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
         CUENTAEGRESOS vermenudona= new CUENTAEGRESOS();
         vermenudona.setVisible(true);
         dispose();
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
-        // TODO add your handling code here:
            EGRESOS vermenudona= new EGRESOS();
         vermenudona.setVisible(true);
         dispose();
@@ -985,7 +954,7 @@ public class CUENTAEGRESOS extends javax.swing.JFrame {
      tcliente.addColumn("DIRECCION");
  
      tablaAlumnos.setModel(tcliente);
-    String []datos =new String[6];
+    String []datos =new String[4];
      java.sql.Connection con2 = null;
       PreparedStatement pst = null;
    
@@ -1011,10 +980,10 @@ public class CUENTAEGRESOS extends javax.swing.JFrame {
         }
     }
         public void BUSCADOR(String dato,int mes, int y){
-
+            dato=cbBuscador.getSelectedItem().toString();
          DefaultTableModel tcliente= new DefaultTableModel();
          tcliente.addColumn("ID");
-         tcliente.addColumn("EGREOS");
+         tcliente.addColumn("EGRESOS");
          tcliente.addColumn("FORMA_PAGO");
          tcliente.addColumn("CANTIDAD $");
          tcliente.addColumn("FECHA");
@@ -1047,47 +1016,46 @@ public class CUENTAEGRESOS extends javax.swing.JFrame {
     }
     public void habilitar(){
          txtDireccion.setEnabled(true);
-//         cbFormapago.setEnabled(true);
-//         cbTipoCuenta.setEnabled(true);
          txtNumero.setEnabled(true);
     }
-    public void BUSCADOR2(String dato,String buscador){
-        
-     DefaultTableModel cliente= new DefaultTableModel();
-     
-      cliente.addColumn("ID");
-     cliente.addColumn("ALUMNO");
-    
-     cliente.addColumn("DUI");
-    
-    String []datos =new String[3];
-     java.sql.Connection con2 = null;
-      PreparedStatement pst = null;
-   
-        try {
-            
-             
-           con2 = cn.getConnection();
-            if (buscador.equals("NIE")){
-                pst=con2.prepareStatement("Select * from alumnos  where NIE="+(dato));
-           rs = pst.executeQuery();
-             
-              }else if (buscador.equals("NOMBRE")){
-        pst=con2.prepareStatement("Select * from alumnos   where NOMBRE_ALUMNO="+(dato));
-           rs = pst.executeQuery();
-             
-              }
-        
-            while (rs.next()) {
-             
-               datos[0]=rs.getString(1);
-               datos[1]=rs.getString(3);
-                datos[2]=rs.getString(6);
-             
-                cliente.addRow(datos);
-            }
-        } catch (Exception e) {
-             JOptionPane.showMessageDialog(this, "Ocurrio un error inesperado.\nFavor comunicarse con el administrador. "+e);
-        }
-    }
 }
+//    public void BUSCADOR2(String dato,String buscador){
+//        
+//     DefaultTableModel cliente= new DefaultTableModel();
+//     
+//      cliente.addColumn("ID");
+//     cliente.addColumn("ALUMNO");
+//    
+//     cliente.addColumn("DUI");
+//    
+//    String []datos =new String[3];
+//     java.sql.Connection con2 = null;
+//      PreparedStatement pst = null;
+//   
+//        try {
+//            
+//             
+//           con2 = cn.getConnection();
+//            if (buscador.equals("NIE")){
+//                pst=con2.prepareStatement("Select * from alumnos  where NIE="+(dato));
+//           rs = pst.executeQuery();
+//             
+//              }else if (buscador.equals("NOMBRE")){
+//        pst=con2.prepareStatement("Select * from alumnos   where NOMBRE_ALUMNO="+(dato));
+//           rs = pst.executeQuery();
+//             
+//              }
+//        
+//            while (rs.next()) {
+//             
+//               datos[0]=rs.getString(1);
+//               datos[1]=rs.getString(3);
+//                datos[2]=rs.getString(6);
+//             
+//                cliente.addRow(datos);
+//            }
+//        } catch (Exception e) {
+//             JOptionPane.showMessageDialog(this, "Ocurrio un error inesperado.\nFavor comunicarse con el administrador. "+e);
+//        }
+//    }
+//}

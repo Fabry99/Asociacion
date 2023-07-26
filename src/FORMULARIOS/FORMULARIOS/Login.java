@@ -19,10 +19,7 @@ import java.awt.Color;
 import java.awt.event.MouseEvent;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Fujitsu
- */
+
 public class Login extends javax.swing.JFrame {
 
         private ImageIcon imagen;
@@ -260,10 +257,11 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_txtuserActionPerformed
 
     private void Button_OcultarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_Button_OcultarMouseClicked
-        if(MouseEvent.BUTTON1 == evt.getButton()){
+        if(MouseEvent.BUTTON1 == evt.getButton()){ 
             txtpass.setEchoChar('•');
             Button_Ocultar.setVisible(false);
             Button_Ver.setVisible(true);
+            
         }
     }//GEN-LAST:event_Button_OcultarMouseClicked
 

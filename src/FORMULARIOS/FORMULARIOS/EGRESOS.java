@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -7,6 +8,7 @@ package FORMULARIOS;
 
 
 import CLASES.TextPrompt;
+import com.mysql.jdbc.CallableStatement;
 import com.mysql.jdbc.Connection;
 import conexion.conexion;
 import java.awt.Color;
@@ -19,12 +21,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import javax.swing.ImageIcon;
-import javax.swing.JDesktopPane;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import java.time.Instant;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -256,6 +258,8 @@ public class EGRESOS extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         txtDireccion = new javax.swing.JTextField();
         txtTelefono = new javax.swing.JTextField();
+        fecha1 = new com.toedter.calendar.JDateChooser();
+        fecha2 = new com.toedter.calendar.JDateChooser();
         jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaAlumnos = new javax.swing.JTable();
@@ -506,6 +510,11 @@ public class EGRESOS extends javax.swing.JFrame {
 
         mes1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         mes1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DECIEMBRE" }));
+        mes1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mes1ActionPerformed(evt);
+            }
+        });
         jPanel1.add(mes1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, 90, -1));
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 3, 14)); // NOI18N
@@ -528,6 +537,8 @@ public class EGRESOS extends javax.swing.JFrame {
 
         txtTelefono.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jPanel1.add(txtTelefono, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 90, 200, 30));
+        jPanel1.add(fecha1, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 240, -1, -1));
+        jPanel1.add(fecha2, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 240, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 30, 810, 310));
 
@@ -811,13 +822,16 @@ public class EGRESOS extends javax.swing.JFrame {
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void btnMostrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarActionPerformed
-         String buscador=cbBuscador.getSelectedItem().toString();
-         mesb=mes.getSelectedIndex()+1;
-         yb=yea.getSelectedItem().toString();
-         ye=Integer.valueOf(yb);
-         BUSCADOR(buscador,mesb,ye);
-         //this.cbBusca.setVisible(false);
-         habilitar();
+            fechas();
+            mostrardatos();
+        
+//         String buscador=cbBuscador.getSelectedItem().toString();
+//         mesb=mes.getSelectedIndex()+1;
+//         yb=yea.getSelectedItem().toString();
+//         ye=Integer.valueOf(yb);
+//         BUSCADOR(buscador,mesb,ye);
+//         //this.cbBusca.setVisible(false);
+//         habilitar();
     }//GEN-LAST:event_btnMostrarActionPerformed
 
     private void cbBuscadorComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_cbBuscadorComponentAdded
@@ -902,8 +916,7 @@ public class EGRESOS extends javax.swing.JFrame {
     String []datos =new String[6];
      java.sql.Connection con2 = null;
       PreparedStatement pst = null;
-      String dato = "";
-      dato = cbBuscador.getSelectedItem().toString();
+     String dato = cbBuscador.getSelectedItem().toString();
    
         try {
             con2 = cn.getConnection();
@@ -922,7 +935,6 @@ public class EGRESOS extends javax.swing.JFrame {
             }
             this.tablaAlumnos.setModel(tcliente);
             
-             // JOptionPane.showMessageDialog(this, "NIE"+datos[0]+"\n"+datos[1]+"\n"+datos[2]+"\n"+datos[3]+"\n"+datos[4]+"\n"+datos[5]);
         } catch (Exception e) {
              JOptionPane.showMessageDialog(this, "Ocurrio un error inesperado.\nFavor comunicarse con el administrador. "+e);
         }
@@ -1031,6 +1043,10 @@ public class EGRESOS extends javax.swing.JFrame {
         dispose();
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    private void mes1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mes1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mes1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1077,6 +1093,8 @@ public class EGRESOS extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbBuscador;
     private javax.swing.JComboBox<String> cbFormapago;
     private javax.swing.JComboBox<String> cbTipoCuenta;
+    private com.toedter.calendar.JDateChooser fecha1;
+    private com.toedter.calendar.JDateChooser fecha2;
     private javax.swing.JLabel fondo;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel10;
@@ -1250,6 +1268,8 @@ public class EGRESOS extends javax.swing.JFrame {
          cbTipoCuenta.setEnabled(true);
          txtCantidad.setEnabled(true);
     }
+    
+    //METODO PARA LLENAR COMBOBOX TIPO DE EGRESOS
     public void llenarCombo(){
      java.sql.Connection con2 = null;
       PreparedStatement pst = null;
@@ -1303,5 +1323,30 @@ public class EGRESOS extends javax.swing.JFrame {
         } catch (Exception e) {
              JOptionPane.showMessageDialog(this, "Ocurrio un error inesperado.\nFavor comunicarse con el administrador. "+e);
         }
+    }
+    
+    public void fechas(){
+        int dia,mes,año;
+        int dia2,mes2,año2;
+        String fecha1,fecha2;
+        
+        
+        dia = this.fecha1.getCalendar().get(Calendar.DAY_OF_MONTH);
+        mes = this.fecha1.getCalendar().get(Calendar.MONTH) + 1;
+        año = this.fecha1.getCalendar().get(Calendar.YEAR);
+        fecha1 = dia + "_" + mes + "_" + año;
+        dia2 = this.fecha2.getCalendar().get(Calendar.DAY_OF_MONTH);
+        mes2 = this.fecha2.getCalendar().get(Calendar.MONTH) + 1;
+        año2 = this.fecha2.getCalendar().get(Calendar.YEAR);
+        fecha2 = dia2 + "_" + mes2 + "_" + año2;
+        
+        try {
+            cone = cn.getConnection();
+            CallableStatement cmd = (CallableStatement) cone.prepareCall("{CALL buscar_egresos_fechas (?,?)}");
+            rs=cmd.executeQuery();
+            
+        } catch (Exception e) {
+        }
+        
     }
 }

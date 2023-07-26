@@ -166,10 +166,6 @@ public class INGRESOS extends javax.swing.JFrame {
                          JOptionPane.showMessageDialog(this, "Ocurrio un error inesperado.\nFavor comunicarse con el administrador. "+e);
                      }
                }
-                     
-                    
-              
-              
               this.txtCantidad.setText(null);
              this.txtcliente.setText(null); 
               this.txtDescripcion.setText(null);
