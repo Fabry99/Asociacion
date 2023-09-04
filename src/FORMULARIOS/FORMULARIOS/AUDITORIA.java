@@ -348,19 +348,19 @@ public class AUDITORIA extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtDuiKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDuiKeyReleased
-        String buscador=cbBuscador.getSelectedItem().toString();
-        if(!buscador.equals("TODOS")) buscador = "DUI";
-        else buscador = "TODOS";
-        String bus2 = "", bTipo = "", bFPago = "";
-        bus2 = txtcliente.getText().toUpperCase();
-        bus = "";
-        bus = txtDui.getText().toUpperCase();
-        bTipo = cbTipoCuenta.getSelectedItem().toString().toUpperCase();
-        bFPago = cbFormapago.getSelectedItem().toString().toUpperCase();
-        mesb=mes.getSelectedIndex()+1;
-        yb=yea.getSelectedItem().toString();
-        ye=Integer.valueOf(yb);
-        BUSCADOR(bus,bus2, bTipo, bFPago,buscador,mesb,ye);
+//        String buscador=cbBuscador.getSelectedItem().toString();
+//        if(!buscador.equals("TODOS")) buscador = "DUI";
+//        else buscador = "TODOS";
+//        String bus2 = "", bTipo = "", bFPago = "";
+//        bus2 = txtcliente.getText().toUpperCase();
+//        bus = "";
+//        bus = txtDui.getText().toUpperCase();
+//        bTipo = cbTipoCuenta.getSelectedItem().toString().toUpperCase();
+//        bFPago = cbFormapago.getSelectedItem().toString().toUpperCase();
+//        mesb=mes.getSelectedIndex()+1;
+//        yb=yea.getSelectedItem().toString();
+//        ye=Integer.valueOf(yb);
+//        BUSCADOR(bus,bus2, bTipo, bFPago,buscador,mesb,ye);
     }//GEN-LAST:event_txtDuiKeyReleased
 
     private void txtclienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtclienteActionPerformed
@@ -368,27 +368,27 @@ public class AUDITORIA extends javax.swing.JFrame {
     }//GEN-LAST:event_txtclienteActionPerformed
 
     private void txtclienteKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtclienteKeyReleased
-        String buscador=cbBuscador.getSelectedItem().toString();
-        if(!buscador.equals("TODOS")) buscador = "NOMBRE";
-        else buscador = "TODOS";
-        String bus2 = "", bTipo = "", bFPago = "";
-        bus2 = txtcliente.getText().toUpperCase();
-        bus = "";
-        bus = txtDui.getText().toUpperCase();
-        bTipo = cbTipoCuenta.getSelectedItem().toString().toUpperCase();
-        bFPago = cbFormapago.getSelectedItem().toString().toUpperCase();
-        mesb=mes.getSelectedIndex()+1;
-        yb=yea.getSelectedItem().toString();
-        ye=Integer.valueOf(yb);
-        BUSCADOR(bus,bus2, bTipo, bFPago,buscador,mesb,ye);
+//        String buscador=cbBuscador.getSelectedItem().toString();
+//        if(!buscador.equals("TODOS")) buscador = "NOMBRE";
+//        else buscador = "TODOS";
+//        String bus2 = "", bTipo = "", bFPago = "";
+//        bus2 = txtcliente.getText().toUpperCase();
+//        bus = "";
+//        bus = txtDui.getText().toUpperCase();
+//        bTipo = cbTipoCuenta.getSelectedItem().toString().toUpperCase();
+//        bFPago = cbFormapago.getSelectedItem().toString().toUpperCase();
+//        mesb=mes.getSelectedIndex()+1;
+//        yb=yea.getSelectedItem().toString();
+//        ye=Integer.valueOf(yb);
+//        BUSCADOR(bus,bus2, bTipo, bFPago,buscador,mesb,ye);
     }//GEN-LAST:event_txtclienteKeyReleased
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        txtDui.setText(null);
-        txtcliente.setText(null);
-
-        BUSCADOR("","" , "", "", "NOFILTRO",mesb,ye);
-        txtDui.requestFocus();
+//        txtDui.setText(null);
+//        txtcliente.setText(null);
+//
+//        BUSCADOR("","" , "", "", "NOFILTRO",mesb,ye);
+//        txtDui.requestFocus();
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void cbBuscadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_cbBuscadorMouseClicked
@@ -396,40 +396,40 @@ public class AUDITORIA extends javax.swing.JFrame {
     }//GEN-LAST:event_cbBuscadorMouseClicked
 
     private void cbBuscadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbBuscadorActionPerformed
-        this.verificarCB();
+//        this.verificarCB();
     }//GEN-LAST:event_cbBuscadorActionPerformed
 
     private void mesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mesActionPerformed
-        String buscador=cbBuscador.getSelectedItem().toString();
-        if(!buscador.equals("TODOS")) buscador = "FECHA";
-        else if(buscador.equals("RANGO FECHA")) buscador = "RANGO FECHA";
-        else buscador = "TODOS";
-        String bus2 = "", bTipo = "", bFPago = "";
-        bus2 = txtcliente.getText().toUpperCase();
-        bus = "";
-        bus = txtDui.getText().toUpperCase();
-        bTipo = cbTipoCuenta.getSelectedItem().toString().toUpperCase();
-        bFPago = cbFormapago.getSelectedItem().toString().toUpperCase();
-        mesb=mes.getSelectedIndex()+1;
-        yb=yea.getSelectedItem().toString();
-        ye=Integer.valueOf(yb);
-        BUSCADOR(bus,bus2, bTipo, bFPago,buscador,mesb,ye);
+//        String buscador=cbBuscador.getSelectedItem().toString();
+//        if(!buscador.equals("TODOS")) buscador = "FECHA";
+//        else if(buscador.equals("RANGO FECHA")) buscador = "RANGO FECHA";
+//        else buscador = "TODOS";
+//        String bus2 = "", bTipo = "", bFPago = "";
+//        bus2 = txtcliente.getText().toUpperCase();
+//        bus = "";
+//        bus = txtDui.getText().toUpperCase();
+//        bTipo = cbTipoCuenta.getSelectedItem().toString().toUpperCase();
+//        bFPago = cbFormapago.getSelectedItem().toString().toUpperCase();
+//        mesb=mes.getSelectedIndex()+1;
+//        yb=yea.getSelectedItem().toString();
+//        ye=Integer.valueOf(yb);
+//        BUSCADOR(bus,bus2, bTipo, bFPago,buscador,mesb,ye);
     }//GEN-LAST:event_mesActionPerformed
 
     private void yeaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yeaActionPerformed
-        String buscador=cbBuscador.getSelectedItem().toString();
-        if(!buscador.equals("TODOS")) buscador = "FECHA";
-        else buscador = "TODOS";
-        String bus2 = "", bTipo = "", bFPago = "";
-        bus2 = txtcliente.getText().toUpperCase();
-        bus = "";
-        bus = txtDui.getText().toUpperCase();
-        bTipo = cbTipoCuenta.getSelectedItem().toString().toUpperCase();
-        bFPago = cbFormapago.getSelectedItem().toString().toUpperCase();
-        mesb=mes.getSelectedIndex()+1;
-        yb=yea.getSelectedItem().toString();
-        ye=Integer.valueOf(yb);
-        BUSCADOR(bus,bus2, bTipo, bFPago,buscador,mesb,ye);
+//        String buscador=cbBuscador.getSelectedItem().toString();
+//        if(!buscador.equals("TODOS")) buscador = "FECHA";
+//        else buscador = "TODOS";
+//        String bus2 = "", bTipo = "", bFPago = "";
+//        bus2 = txtcliente.getText().toUpperCase();
+//        bus = "";
+//        bus = txtDui.getText().toUpperCase();
+//        bTipo = cbTipoCuenta.getSelectedItem().toString().toUpperCase();
+//        bFPago = cbFormapago.getSelectedItem().toString().toUpperCase();
+//        mesb=mes.getSelectedIndex()+1;
+//        yb=yea.getSelectedItem().toString();
+//        ye=Integer.valueOf(yb);
+//        BUSCADOR(bus,bus2, bTipo, bFPago,buscador,mesb,ye);
     }//GEN-LAST:event_yeaActionPerformed
 
     private void GENERADORMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_GENERADORMouseClicked
@@ -437,10 +437,10 @@ public class AUDITORIA extends javax.swing.JFrame {
     }//GEN-LAST:event_GENERADORMouseClicked
 
     private void GENERADORActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_GENERADORActionPerformed
-
-        String mesb2 = mes.getSelectedItem().toString();
-        String yb2 = yea.getSelectedItem().toString();
-        pdf(mesb2,yb2);
+//
+//        String mesb2 = mes.getSelectedItem().toString();
+//        String yb2 = yea.getSelectedItem().toString();
+//        pdf(mesb2,yb2);
 
     }//GEN-LAST:event_GENERADORActionPerformed
 

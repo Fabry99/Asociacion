@@ -12,7 +12,7 @@ public class conexion {
     public conexion(){
         try {
                 Class.forName("com.mysql.jdbc.Driver");
-                con=(Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/dbcolegios","root","");
+                con=(Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/dbcolegio","root","");
                 
         } catch (Exception e) {
             JOptionPane.showConfirmDialog(null ,"ERROR"+e);
