@@ -1018,126 +1018,218 @@ public class INFORMEINGRESOS extends javax.swing.JFrame {
 private void pdf(String mes, String year){
     try {
         
-        
-
-
         FileOutputStream archivo;
         File file=new File(System.getProperty("user.home")+"/desktop/"+mes+"-"+year+".pdf");
         archivo=new FileOutputStream(file);
-        Image imagen = Image.getInstance("src/IMAGENES/IMAGENES/logo2.png");
-        imagen.scalePercent(30f);
-      
         Document doc=new Document(PageSize.A4.rotate(), 10f, 10f, 20f, 0f);
         PdfWriter.getInstance(doc,archivo); 
         doc.open();
-        Paragraph fecha= new Paragraph();
-        Font negrita = new Font(Font.FontFamily.TIMES_ROMAN,12,Font.BOLD,BaseColor.BLACK);
-        fecha.add(Chunk.NEWLINE);
-        Date date=new Date();
-        fecha.add("FECHA: "+new SimpleDateFormat("dd-MM-yyyy").format(date));
-         
-        PdfPTable Encabezado=new PdfPTable(4);
-         Encabezado.setWidthPercentage(100);
-         Encabezado.getDefaultCell().setBorder(0);
-         float[] ColumnaEncabezado = new float[]{20f,30f,70f,20F};
-         Encabezado.setWidths(ColumnaEncabezado);
-         Encabezado.setHorizontalAlignment(Element.ALIGN_CENTER);
         
-         PdfPCell celdaEncabezado = new PdfPCell(new Paragraph("REPORTE INGRESOS",FontFactory.getFont("Arial",14,Font.BOLD,BaseColor.BLACK)));
-         celdaEncabezado.setColspan(3);
-         celdaEncabezado.setBorder(0);
-       Encabezado.addCell(celdaEncabezado).setHorizontalAlignment(Element.ALIGN_CENTER);
-       PdfPCell celdaimg = new PdfPCell(imagen);
-       imagen.setAbsolutePosition(0f, 0f);
-         celdaimg.setRowspan(3);
-           celdaimg.setBorder(0);
-        Encabezado.addCell(celdaimg).setHorizontalAlignment(Element.ALIGN_CENTER);
+        Image imagen = Image.getInstance("src/IMAGENES/IMAGENES/asociacion.png");
+        imagen.scalePercent(12f);
+        imagen.setAbsolutePosition(doc.leftMargin(),doc.top()- imagen.getScaledHeight()-5);
+        doc.add(imagen);
         
-        PdfPCell celdaEncabezado2 = new PdfPCell(new Paragraph("ASOCIACION SANTA CATALINA DE SIENA",FontFactory.getFont("Arial",14,Font.BOLD,BaseColor.BLACK)));
-         celdaEncabezado2.setColspan(3);
-           celdaEncabezado2.setBorder(0);
-       Encabezado.addCell(celdaEncabezado2).setHorizontalAlignment(Element.ALIGN_CENTER);
-             PdfPCell celdaEncabezado3 = new PdfPCell(new Paragraph(mes+"  DEL  "+year,FontFactory.getFont("Arial",12,Font.BOLD,BaseColor.BLACK)));
-         celdaEncabezado3.setColspan(3);
-           celdaEncabezado3.setBorder(0);
-       Encabezado.addCell(celdaEncabezado3).setHorizontalAlignment(Element.ALIGN_CENTER);
-       PdfPCell celdaEncabezado4 = new PdfPCell(new Paragraph("\n"));
-         celdaEncabezado4.setColspan(4);
-           celdaEncabezado4.setBorder(0);
-       Encabezado.addCell(celdaEncabezado4).setHorizontalAlignment(Element.ALIGN_LEFT);
-        PdfPCell celdaEncabezado5 = new PdfPCell(new Paragraph("\n"));
-         celdaEncabezado5.setColspan(4);
-           celdaEncabezado5.setBorder(0);
-       Encabezado.addCell(celdaEncabezado5).setHorizontalAlignment(Element.ALIGN_LEFT);
-       doc.add(Encabezado);
+        Font neg=new Font(FontFactory.getFont("Arial",16, Font.BOLD,BaseColor.BLACK));
+        Font neg1=new Font(FontFactory.getFont("Arial",14, Font.BOLD,BaseColor.BLACK));
+        Font contac=new Font(FontFactory.getFont("Arial",12, Font.BOLD,BaseColor.BLACK));
+        
+        Paragraph titulo=new Paragraph("ASOCIACIÓN SANTA CATALINA DE SIENA",neg);
+        titulo.setAlignment(Element.ALIGN_CENTER);
+        doc.add(titulo);
+        
+        Paragraph tituloIn=new Paragraph("INFORME DE INGRESOS",neg1);
+        tituloIn.setAlignment(Element.ALIGN_CENTER);
+        tituloIn.setSpacingAfter(8f);
+        doc.add(tituloIn);
+        
+        PdfPTable contactos=new PdfPTable(2);
+        PdfPCell ConCel1=new PdfPCell(new Paragraph("santacatalina.ong@gmail.com",contac));
+        PdfPCell ConCel2=new PdfPCell(new Paragraph("http://asociacionsantacatalinadesiena.org/",contac));
+        ConCel1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        ConCel2.setPaddingLeft(5f);
+        ConCel1.setPaddingRight(5f);
+        ConCel1.setBorderWidth(0);
+        ConCel2.setBorderWidth(0);
+        contactos.addCell(ConCel1);
+        contactos.addCell(ConCel2);
+        doc.add(contactos);
+        
+        PdfPTable tabTelef=new PdfPTable(2);
+        PdfPCell ConCel3=new PdfPCell(new Paragraph("Teléfonos:",contac));
+        PdfPCell ConCel4=new PdfPCell(new Paragraph("2447-2022     (503) 7702-8122"));
+        ConCel3.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        ConCel3.setBorderWidth(0);
+        ConCel4.setBorderWidth(0);
+        tabTelef.addCell(ConCel3);
+        tabTelef.addCell(ConCel4);
+        doc.add(tabTelef);
+        
+        Paragraph direccion=new Paragraph("Callejón Poniente Iglesia El Carmen, #10, Santa Ana, El Salvador"); 
+        direccion.setAlignment(Element.ALIGN_CENTER);
+        direccion.setSpacingAfter(13f);
+        doc.add(direccion);
+        
+        //Datos personales clientes
+        for (int i = 0; i < tablaAlumnos.getRowCount(); i++) {
+            String ingreso = tablaAlumnos.getValueAt(i, 1).toString();
+            String cliente = tablaAlumnos.getValueAt(i, 2).toString();
+            String dui = tablaAlumnos.getValueAt(i, 3).toString();
+            String forma = tablaAlumnos.getValueAt(i, 4).toString();
+            String cantidad = tablaAlumnos.getValueAt(i, 5).toString();
+            String fech = tablaAlumnos.getValueAt(i, 6).toString();
+            String descr = tablaAlumnos.getValueAt(i, 7).toString();
+            
+            PdfPTable tabCliente=new PdfPTable(4);
+            tabCliente.setWidths(new float[]{10f,15f,10,10});
+            PdfPCell ClCell1=new PdfPCell(new Paragraph("Cliente:",contac));
+            PdfPCell ClCell2=new PdfPCell(new Paragraph(cliente));
+            PdfPCell ClCell3=new PdfPCell(new Paragraph("DUI/NIT:",contac));
+            PdfPCell ClCell4=new PdfPCell(new Paragraph(dui));
+            ClCell1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            ClCell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            ClCell1.setBorderWidth(0f);
+            ClCell2.setBorderWidth(0f);
+            ClCell3.setBorderWidth(0f);
+            ClCell4.setBorderWidth(0f);
+            tabCliente.addCell(ClCell1);
+            tabCliente.addCell(ClCell2);
+            tabCliente.addCell(ClCell3);
+            tabCliente.addCell(ClCell4);
+            tabCliente.setSpacingAfter(5f);
+            doc.add(tabCliente);
+           
+            
+            PdfPTable tabDirec=new PdfPTable(4);
+            tabDirec.setWidths(new float[]{10f,15f,10,10});
+            PdfPCell DCell1=new PdfPCell(new Paragraph("Dirección:",contac));
+            PdfPCell DCell2=new PdfPCell(new Paragraph(""));
+            PdfPCell DCell3=new PdfPCell(new Paragraph("Teléfono:",contac));
+            PdfPCell DCell4=new PdfPCell(new Paragraph(""));
+            DCell1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            DCell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            DCell1.setBorderWidth(0f);
+            DCell2.setBorderWidth(0f);
+            DCell3.setBorderWidth(0f);
+            DCell4.setBorderWidth(0f);
+            tabDirec.addCell(DCell1);
+            tabDirec.addCell(DCell2);
+            tabDirec.addCell(DCell3);
+            tabDirec.addCell(DCell4);
+            tabDirec.setSpacingAfter(5f);
+            doc.add( tabDirec);
+            
+            PdfPTable tabNacio = new PdfPTable(6);
+            tabNacio.setWidths(new float[]{10f, 13f, 10f, 2f,8f,2f});
+            PdfPCell NCell1 = new PdfPCell(new Paragraph("Nacionalidad:", contac));
+            PdfPCell NCell2 = new PdfPCell(new Paragraph(""));
+            PdfPCell NCell3 = new PdfPCell(new Paragraph("Persona Natural:", contac));
+            PdfPCell NCell4 = new PdfPCell(new Paragraph(""));
+            PdfPCell NCell5 = new PdfPCell(new Paragraph("Persona Juridica:",contac));
+            PdfPCell NCell6 = new PdfPCell(new Paragraph(""));
+            NCell1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            NCell3.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            NCell5.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            NCell1.setBorderWidth(0f);
+            NCell2.setBorderWidth(0f);
+            NCell3.setBorderWidth(0f);
+            NCell5.setBorderWidth(0f);
+            tabNacio.addCell(NCell1);
+            tabNacio.addCell(NCell2);
+            tabNacio.addCell(NCell3);
+            tabNacio.addCell(NCell4);
+            tabNacio.addCell(NCell5);
+            tabNacio.addCell(NCell6);
+            tabNacio.setSpacingAfter(5f);
+            doc.add(tabNacio);
+            
+            PdfPTable tabCargo = new PdfPTable(2);
+            tabCargo.setWidths(new float[]{10f, 35f});
+            PdfPCell crCell1 = new PdfPCell(new Paragraph("Cargo Publico:", contac));
+            PdfPCell crCell2 = new PdfPCell(new Paragraph(""));
+            crCell1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            crCell1.setBorderWidth(0f);
+            crCell2.setBorderWidth(0f);
+            tabCargo.addCell(crCell1);
+            tabCargo.addCell(crCell2);
+            tabCargo.setSpacingAfter(5f);
+            doc.add(tabCargo);
+            
+            PdfPTable tabRango = new PdfPTable(4);
+            tabRango.setWidths(new float[]{10f,17f,8f,10f});
+            PdfPCell RCel1 = new PdfPCell(new Paragraph("De:", contac));
+            PdfPCell RCel2 = new PdfPCell(new Paragraph(""));
+            PdfPCell RCel3 = new PdfPCell(new Paragraph("Hasta:",contac));
+            PdfPCell RCel4 = new PdfPCell(new Paragraph(""));
+            RCel1.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            RCel3.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            RCel1.setBorderWidth(0f);
+            RCel2.setBorderWidth(0f);
+            RCel3.setBorderWidth(0f);
+            RCel4.setBorderWidth(0f);
+            tabRango.addCell(RCel1);
+            tabRango.addCell(RCel2);
+            tabRango.addCell(RCel3);
+            tabRango.addCell(RCel4);
+            tabRango.setSpacingAfter(12f);
+            doc.add(tabRango);
+            
+    
+        }
          
          //AQUI TERMINA PRIMERA TABLA
-          PdfPTable Informe=new PdfPTable(7);
+          PdfPTable Informe=new PdfPTable(5);
          Informe.setWidthPercentage(90);
-         Informe.getDefaultCell().setBorder(7);
        
-         float[] Columnainforme = new float[]{15f,30f,10f,20f,10f,15f,20f};
+         float[] Columnainforme = new float[]{15f,15f,10f,10f,25f};
          Informe.setWidths(Columnainforme);
          Informe.setHorizontalAlignment(Element.ALIGN_CENTER);
-         PdfPCell c1= new PdfPCell(new Paragraph("INGRESO",FontFactory.getFont("Arial",10,Font.BOLDITALIC,BaseColor.WHITE)));
-         PdfPCell c2= new PdfPCell(new Paragraph("CLIENTE",FontFactory.getFont("Arial",10,Font.BOLDITALIC,BaseColor.WHITE)));
-         PdfPCell c3= new PdfPCell(new Paragraph("DUI",FontFactory.getFont("Arial",10,Font.BOLDITALIC,BaseColor.WHITE)));
-         PdfPCell c4= new PdfPCell(new Paragraph("FORMA_PAGO",FontFactory.getFont("Arial",10,Font.BOLDITALIC,BaseColor.WHITE)));
-         PdfPCell c5= new PdfPCell(new Paragraph("CANTIDAD",FontFactory.getFont("Arial",10,Font.BOLDITALIC,BaseColor.WHITE)));
-         PdfPCell c6= new PdfPCell(new Paragraph("FECHA",FontFactory.getFont("Arial",10,Font.BOLDITALIC,BaseColor.WHITE)));
-         PdfPCell c7= new PdfPCell(new Paragraph("DESCRIPCION",FontFactory.getFont("Arial",10,Font.BOLDITALIC,BaseColor.WHITE)));
+         PdfPCell c1= new PdfPCell(new Paragraph("INGRESO",FontFactory.getFont("Arial",10,Font.BOLD,BaseColor.BLACK)));
+         PdfPCell c4= new PdfPCell(new Paragraph("FORMA DE PAGO",FontFactory.getFont("Arial",10,Font.BOLD,BaseColor.BLACK)));
+         PdfPCell c5= new PdfPCell(new Paragraph("CANTIDAD",FontFactory.getFont("Arial",10,Font.BOLD,BaseColor.BLACK)));
+         PdfPCell c6= new PdfPCell(new Paragraph("FECHA",FontFactory.getFont("Arial",10,Font.BOLD,BaseColor.BLACK)));
+         PdfPCell c7= new PdfPCell(new Paragraph("DESCRIPCION",FontFactory.getFont("Arial",10,Font.BOLD,BaseColor.BLACK)));
          PdfPCell linea = new PdfPCell(new Paragraph("\n"));
          linea.setColspan(3);
          linea.setBorder(0);
-         c1.setBackgroundColor(new BaseColor(0,105,153)); 
-         c2.setBackgroundColor(new BaseColor(0,105,153));
-         c3.setBackgroundColor(new BaseColor(0,105,153));
-         c4.setBackgroundColor(new BaseColor(0,105,153));
-         c5.setBackgroundColor(new BaseColor(0,105,153));
-         c6.setBackgroundColor(new BaseColor(0,105,153));
-         c7.setBackgroundColor(new BaseColor(0,105,153));
-         c1.setBorder(7);c2.setBorder(7);c3.setBorder(7); c4.setBorder(7); c5.setBorder(7);c6.setBorder(7);c7.setBorder(7);
-         Informe.addCell(c1); Informe.addCell(c2); Informe.addCell(c3); Informe.addCell(c4); Informe.addCell(c5); Informe.addCell(c6); Informe.addCell(c7);
+         c1.setBackgroundColor(new BaseColor(162,216,190)); 
+         c4.setBackgroundColor(new BaseColor(162,216,190));
+         c5.setBackgroundColor(new BaseColor(162, 216, 190));
+         c6.setBackgroundColor(new BaseColor(162,216,190));
+         c7.setBackgroundColor(new BaseColor(162, 216, 190));
+         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+         c4.setHorizontalAlignment(Element.ALIGN_CENTER);
+         c5.setHorizontalAlignment(Element.ALIGN_CENTER);
+         c6.setHorizontalAlignment(Element.ALIGN_CENTER);
+         c7.setHorizontalAlignment(Element.ALIGN_CENTER);
+         Informe.addCell(c1); Informe.addCell(c4); Informe.addCell(c5); Informe.addCell(c6); Informe.addCell(c7);
          Informe.addCell(linea).setHorizontalAlignment(Element.ALIGN_LEFT);
          Informe.setHorizontalAlignment(Element.ALIGN_CENTER);
          doc.add(Informe);
          
       //AQUI TERMINA segunda TABLA
-        PdfPTable DATOS=new PdfPTable(7);
-         DATOS.setWidthPercentage(90);
-         DATOS.getDefaultCell().setBorder(2);
-         DATOS.setWidths(Columnainforme);
-         DATOS.setHorizontalAlignment(Element.ALIGN_CENTER);
+        PdfPTable DATOS = new PdfPTable(5);
+        DATOS.setWidthPercentage(90);
+        DATOS.setWidths(Columnainforme);
+        DATOS.setHorizontalAlignment(Element.ALIGN_CENTER);
          
          for (int i=0; i < tablaAlumnos.getRowCount(); i++){
             String ingreso=tablaAlumnos.getValueAt(i, 1).toString();
-            String cliente=tablaAlumnos.getValueAt(i, 2).toString();
-            String dui=tablaAlumnos.getValueAt(i, 3).toString();
             String forma=tablaAlumnos.getValueAt(i, 4).toString();
             String cantidad=tablaAlumnos.getValueAt(i, 5).toString();
             String fech=tablaAlumnos.getValueAt(i, 6).toString();
             String descr=tablaAlumnos.getValueAt(i, 7).toString();
             
             
-            PdfPCell ingresoPDF= new PdfPCell(new Paragraph(ingreso ,FontFactory.getFont("Arial",10,Font.BOLDITALIC,BaseColor.BLACK)));
-            PdfPCell clientePDF= new PdfPCell(new Paragraph(cliente ,FontFactory.getFont("Arial",10,Font.BOLDITALIC,BaseColor.BLACK)));
-            PdfPCell duiPDF = new PdfPCell(new Paragraph(dui ,FontFactory.getFont("Arial",10,Font.BOLDITALIC,BaseColor.BLACK)));
-            PdfPCell formaPDF = new PdfPCell(new Paragraph(forma ,FontFactory.getFont("Arial",10,Font.BOLDITALIC,BaseColor.BLACK)));
-            PdfPCell cantidadPDF = new PdfPCell(new Paragraph(cantidad ,FontFactory.getFont("Arial",10,Font.BOLDITALIC,BaseColor.BLACK)));
-            PdfPCell fechPDF= new PdfPCell(new Paragraph(fech ,FontFactory.getFont("Arial",10,Font.BOLDITALIC,BaseColor.BLACK)));
-            PdfPCell descrPDF = new PdfPCell(new Paragraph(descr ,FontFactory.getFont("Arial",10,Font.BOLDITALIC,BaseColor.BLACK)));
-            
-            ingresoPDF.setBackgroundColor(new BaseColor(162, 216, 190)); 
-            clientePDF.setBackgroundColor(new BaseColor(255, 255, 255));
-            duiPDF.setBackgroundColor(new BaseColor(162, 216, 190));
-            formaPDF.setBackgroundColor(new BaseColor(255, 255, 255));
-            cantidadPDF.setBackgroundColor(new BaseColor(162, 216, 190));
-            fechPDF.setBackgroundColor(new BaseColor(255, 255, 255));
-            descrPDF.setBackgroundColor(new BaseColor(162, 216, 190));
-            
+            PdfPCell ingresoPDF= new PdfPCell(new Paragraph(ingreso ,FontFactory.getFont("Arial",12,BaseColor.BLACK)));
+            PdfPCell formaPDF = new PdfPCell(new Paragraph(forma ,FontFactory.getFont("Arial",12,BaseColor.BLACK)));
+            PdfPCell cantidadPDF = new PdfPCell(new Paragraph("$"+cantidad ,FontFactory.getFont("Arial",12,BaseColor.BLACK)));
+            PdfPCell fechPDF= new PdfPCell(new Paragraph(fech ,FontFactory.getFont("Arial",12,BaseColor.BLACK)));
+            PdfPCell descrPDF = new PdfPCell(new Paragraph(descr ,FontFactory.getFont("Arial",12,BaseColor.BLACK)));
+            cantidadPDF.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            fechPDF.setHorizontalAlignment(Element.ALIGN_CENTER);
+            descrPDF.setHorizontalAlignment(Element.ALIGN_CENTER);
             DATOS.addCell(ingresoPDF);
-            DATOS.addCell(clientePDF);
-            DATOS.addCell(duiPDF);
             DATOS.addCell(formaPDF);
             DATOS.addCell(cantidadPDF);
             DATOS.addCell(fechPDF);
